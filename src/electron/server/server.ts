@@ -14,6 +14,7 @@ import { BrowserWindow } from "electron";
 import { ipcWebContentsSend } from "../helpers/util.js";
 import { getHudPath } from "../helpers/index.js";
 import path from "path";
+import { verifyWebApp } from "../verifyHUD.js";
 
 const port = process.env.PORT || "1349";
 
@@ -30,10 +31,8 @@ export const startServer = (mainWindow: BrowserWindow) => {
   app.post("/gsi", readGameData);
 
   /* Hud */
-  app.get("/hud", (_req, res) => {
-    // console.log(path.join(getHudPath(), "index.html"));
-    res.sendFile(path.join(getHudPath(), "index.html"));
-  });
+  // Apply verifyWebApp middleware to the /hud route
+  app.use("/hud", verifyWebApp, express.static(getHudPath())); // Serve static files after verification
 
   /* Routes */
   app.use(playerRoutes);
