@@ -27,7 +27,7 @@ export const useTeams = () => {
     }
   };
 
-  const createTeam = async (team: Team) => {
+  const createTeam = async (team: FormData) => {
     // Handle create or update player logic
     setIsLoading(true);
     await axios.post(`${apiUrl}/teams`, team);
@@ -35,10 +35,10 @@ export const useTeams = () => {
     setIsLoading(false);
   };
 
-  const updateTeam = async (team: Team) => {
+  const updateTeam = async (team_id: string, team: FormData) => {
     // Handle update player logic
     setIsLoading(true);
-    await axios.put(`${apiUrl}/teams/${team._id}`, team);
+    await axios.put(`${apiUrl}/teams/${team_id}`, team);
     fetchTeams();
     setSelectedTeam(null);
     setIsLoading(false);

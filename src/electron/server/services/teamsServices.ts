@@ -21,6 +21,7 @@ export const createTeam = (team: Team) => {
   INSERT INTO teams (_id, name, country, shortName, logo, extra)
   VALUES (?, ?, ?, ?, ?, ?)
 `;
+  console.log(team);
   return new Promise((resolve, reject) => {
     db.run(
       sql,

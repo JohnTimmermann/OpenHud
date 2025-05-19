@@ -20,27 +20,25 @@ export const Searchbar = ({ dataSearch }: SearchBarProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div
-        id="Search"
-        className="noDrag text-textcolor relative flex size-full items-center justify-center gap-2 rounded bg-background-secondary px-2 text-sm"
-      >
-        <MdSearch className="size-6" />
-        <input
-          type="text"
-          placeholder="Search"
-          className="w-full border-none bg-transparent focus:outline-none focus:ring-0"
-          onChange={handleSearch}
-          value={searchValue}
+    <div
+      id="Search"
+      className="noDrag absolute left-1/2 flex h-8 -translate-x-1/2 items-center justify-center rounded-full border border-border px-2 text-sm"
+    >
+      <MdSearch className="size-5" />
+      <input
+        type="text"
+        placeholder={`Search`}
+        className="w-36 border-none bg-transparent focus:outline-none focus:ring-0"
+        onChange={handleSearch}
+        value={searchValue}
+      />
+      {searchValue.length === 0 ? null : (
+        <MdClose
+          id="clearSearch"
+          className="absolute right-2 size-5 cursor-pointer rounded-lg hover:bg-background-light"
+          onClick={clearSearchInput}
         />
-        {searchValue.length === 0 ? null : (
-          <MdClose
-            id="clearSearch"
-            className="absolute right-2 cursor-pointer"
-            onClick={clearSearchInput}
-          />
-        )}
-      </div>
+      )}
     </div>
   );
 };

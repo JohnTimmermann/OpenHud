@@ -30,7 +30,12 @@ type EventPayloadMapping = {
   openHudsDirectory: void;
 };
 
-type FrameWindowAction = "CLOSE" | "MAXIMIZE" | "MINIMIZE" | "CONSOLE";
+type FrameWindowAction =
+  | "CLOSE"
+  | "MAXIMIZE"
+  | "MINIMIZE"
+  | "CONSOLE"
+  | "RESET";
 
 interface Player {
   _id: string;

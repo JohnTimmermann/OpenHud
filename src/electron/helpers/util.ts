@@ -67,7 +67,13 @@ function createMissingDir(directory: string) {
 export function checkDirectories() {
   const userData = app.getPath("userData");
   const customHudDir = path.join(app.getPath("home"), "OpenHud-Huds");
-  [customHudDir, userData].forEach(createMissingDir);
+  const uploadsDir = path.join(userData, "uploads");
+  const playerPicturesDir = path.join(uploadsDir, "player_pictures");
+  const teamLogosDir = path.join(uploadsDir, "team_logos");
+
+  [customHudDir, userData, uploadsDir, playerPicturesDir, teamLogosDir].forEach(
+    createMissingDir,
+  );
 
   /* Check to see if the user has a custom hud loaded */
   const customHudData = path.join(

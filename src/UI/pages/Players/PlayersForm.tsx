@@ -7,6 +7,7 @@ import {
 } from "../../components";
 import { countries } from "../../api/countries";
 import { usePlayers, useTeams } from "../../hooks";
+import { apiUrl } from "../../api/api";
 
 interface PlayerFormProps {
   open: boolean;
@@ -25,20 +26,21 @@ export const PlayerForm = ({ open, setOpen }: PlayerFormProps) => {
   const { teams } = useTeams();
 
   const [username, setUsername] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const [avatarFile, setAvatarFile] = useState<File | null>(null); // For file upload
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [steamId, setSteamId] = useState("");
   const [team, setTeam] = useState("");
   const [country, setCountry] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [steamIdError, setSteamIdError] = useState("");
+  const [steamIdFormatError, setSteamIdFormatError] = useState("");
 
   useEffect(() => {
     if (isEditing && selectedPlayer) {
       // Update form fields when selectedPlayer prop changes
       setUsername(selectedPlayer.username);
-      setAvatar(selectedPlayer.avatar || "");
       setFirstName(selectedPlayer.firstName || "");
       setLastName(selectedPlayer.lastName || "");
       setSteamId(selectedPlayer.steamid);
@@ -51,15 +53,20 @@ export const PlayerForm = ({ open, setOpen }: PlayerFormProps) => {
 
   const validateForm = () => {
     let isValid = true;
-    setErrorMessage(""); // Clear any previous error message
+    setUsernameError("");
+    setSteamIdError("");
+    setSteamIdFormatError("");
 
-    if (!username || !steamId) {
-      setErrorMessage("Alias and SteamID64 are required"); // Set error message
+    if (!username) {
+      setUsernameError("Username is required");
       isValid = false;
     }
 
-    if (steamId && !/^\d{17}$/.test(steamId)) {
-      setErrorMessage("SteamID64 must be 17 digits long"); // Set error message
+    if (!steamId) {
+      setSteamIdError("SteamID64 is required");
+      isValid = false;
+    } else if (!/^\d{17}$/.test(steamId)) {
+      setSteamIdFormatError("SteamID64 must be 17 digits long");
       isValid = false;
     }
 
@@ -70,27 +77,35 @@ export const PlayerForm = ({ open, setOpen }: PlayerFormProps) => {
     if (!validateForm()) return; // Early return if validation fails
 
     setIsSubmitting(true);
-    const newPlayer: Player = {
-      _id: selectedPlayer?._id || "",
-      username,
-      avatar,
-      firstName: firstName,
-      lastName: lastName,
-      steamid: steamId,
-      team,
-      country: country,
-      extra: selectedPlayer?.extra || {},
-    };
 
+    // Create a FormData object to handle file upload
+    const formData = new FormData();
     if (isEditing && selectedPlayer) {
-      await updatePlayer(newPlayer);
-    } else if (createPlayer) {
-      await createPlayer(newPlayer);
+      formData.append("_id", selectedPlayer._id);
+    }
+    formData.append("username", username);
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("steamid", steamId);
+    formData.append("team", team);
+    formData.append("country", country);
+    if (avatarFile) {
+      formData.append("avatar", avatarFile); // Append the file
     }
 
-    setIsSubmitting(false);
-    setOpen(false);
-    handleReset();
+    try {
+      if (isEditing && selectedPlayer) {
+        await updatePlayer(selectedPlayer._id, formData); // Pass FormData to updatePlayer
+      } else if (createPlayer) {
+        await createPlayer(formData); // Pass FormData to createPlayer
+      }
+      setOpen(false);
+      handleReset();
+    } catch (error) {
+      console.error("Error submitting player:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCancel = () => {
@@ -102,13 +117,15 @@ export const PlayerForm = ({ open, setOpen }: PlayerFormProps) => {
     setIsEditing(false);
     setSelectedPlayer(null);
     setUsername("");
-    setAvatar("");
+    setAvatarFile(null); // Reset file input
     setFirstName("");
     setLastName("");
     setSteamId("");
     setTeam("");
     setCountry("");
-    setErrorMessage(""); // Clear any previous error message
+    setUsernameError("");
+    setSteamIdError("");
+    setSteamIdFormatError("");
   };
 
   return (
@@ -126,16 +143,16 @@ export const PlayerForm = ({ open, setOpen }: PlayerFormProps) => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            error={!!errorMessage} // Set error state based on errorMessage
-            errorMessage={errorMessage} // Show error message below field
+            error={!!usernameError} // Set error state based on usernameError
+            errorMessage={usernameError} // Show error message below field
           />
           <TextInput
             label="SteamID64"
             value={steamId}
             onChange={(e) => setSteamId(e.target.value)}
             required
-            error={!!errorMessage} // Set error state based on errorMessage
-            errorMessage={errorMessage} // Show error message below field
+            error={!!steamIdError || !!steamIdFormatError} // Set error state based on steamIdError or steamIdFormatError
+            errorMessage={steamIdError || steamIdFormatError} // Show error message below field
           />
           <TextInput
             label="First Name"
@@ -147,12 +164,6 @@ export const PlayerForm = ({ open, setOpen }: PlayerFormProps) => {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
-          <TextInput
-            label="Avatar URL"
-            value={avatar}
-            onChange={(e) => setAvatar(e.target.value)}
-          />
-
           <div>
             <label htmlFor="team" className="mb-2 block font-medium text-text">
               Team
@@ -176,7 +187,6 @@ export const PlayerForm = ({ open, setOpen }: PlayerFormProps) => {
               ))}
             </select>
           </div>
-          {/* <input type="file" onChange={(e) => setFile(e.target.files?.[0])} /> */}
           <div className="mb-4">
             <label className="mb-2 block font-medium">Country</label>
             <select
@@ -191,12 +201,50 @@ export const PlayerForm = ({ open, setOpen }: PlayerFormProps) => {
               ))}
             </select>
           </div>
+          <div>
+            <label
+              htmlFor="avatar"
+              className="mb-2 block font-medium text-text"
+            >
+              Avatar
+            </label>
+            <div className="flex flex-col items-start gap-4">
+              {/* Show current avatar if editing and player has one */}
+              {isEditing && selectedPlayer?.avatar && (
+                <img
+                  src={apiUrl + selectedPlayer.avatar}
+                  alt="Current Avatar"
+                  className="size-36 rounded border object-cover"
+                />
+              )}
+
+              {/* Hidden file input */}
+              <input
+                type="file"
+                id="avatar"
+                accept="image/*"
+                onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
+                className="hidden"
+              />
+
+              {/* Custom button to trigger file input */}
+              <button
+                type="button"
+                onClick={() => document.getElementById("avatar")?.click()}
+                className="rounded bg-primary px-4 py-2 text-white transition-colors hover:bg-primary-dark"
+              >
+                Upload Avatar
+              </button>
+
+              {/* Display the selected file name */}
+              {avatarFile && (
+                <span className="text-sm text-gray-500">{avatarFile.name}</span>
+              )}
+            </div>
+          </div>
         </div>
       </Container>
       <div className="inline-flex w-full justify-end gap-2 border-t border-border p-2">
-        {errorMessage && (
-          <p className="my-1 text-end text-red-500">{errorMessage}</p>
-        )}
         <div className="mt-1 flex justify-end gap-1">
           {isSubmitting ? (
             <ButtonContained disabled>Submitting...</ButtonContained>
@@ -204,7 +252,7 @@ export const PlayerForm = ({ open, setOpen }: PlayerFormProps) => {
             <ButtonContained onClick={handleSubmit}>Submit</ButtonContained>
           )}
           <ButtonContained onClick={handleReset}>Reset</ButtonContained>
-          {isEditing && ( // Conditionally render Cancel button if onCancel prop is provided
+          {isEditing && (
             <ButtonContained color="secondary" onClick={handleCancel}>
               Cancel
             </ButtonContained>

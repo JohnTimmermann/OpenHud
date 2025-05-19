@@ -26,6 +26,10 @@ export function ipcMainEvents(mainWindow: BrowserWindow) {
         break;
       case "CONSOLE":
         mainWindow.webContents.toggleDevTools();
+        break;
+      case "RESET":
+        mainWindow.unmaximize();
+        break;
     }
   });
 

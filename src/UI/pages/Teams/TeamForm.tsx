@@ -7,6 +7,7 @@ import {
 } from "../../components";
 import { countries } from "../../api/countries";
 import { useTeams } from "../../hooks";
+import { apiUrl } from "../../api/api";
 
 interface TeamsFormProps {
   open: boolean;
@@ -17,9 +18,10 @@ export const TeamsForm = ({ open, setOpen }: TeamsFormProps) => {
   const [teamName, setTeamName] = useState("");
   const [shortName, setShortName] = useState("");
   const [country, setCountry] = useState("");
-  const [logo, setLogo] = useState("");
+  const [logo, setLogo] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [teamNameError, setTeamNameError] = useState("");
+  const [logoError, setLogoError] = useState("");
 
   const {
     createTeam,
@@ -35,7 +37,6 @@ export const TeamsForm = ({ open, setOpen }: TeamsFormProps) => {
       setTeamName(selectedTeam.name || "");
       setShortName(selectedTeam.shortName || "");
       setCountry(selectedTeam.country || "");
-      setLogo(selectedTeam.logo || "");
     } else {
       handleReset();
     }
@@ -43,10 +44,16 @@ export const TeamsForm = ({ open, setOpen }: TeamsFormProps) => {
 
   const validateForm = () => {
     let isValid = true;
-    setErrorMessage("");
+    setTeamNameError("");
+    setLogoError("");
 
-    if (!teamName || !logo) {
-      setErrorMessage("Team name and Logo required!");
+    if (!teamName) {
+      setTeamNameError("Team name is required");
+      isValid = false;
+    }
+
+    if (!logo) {
+      setLogoError("Logo URL is required");
       isValid = false;
     }
 
@@ -57,19 +64,22 @@ export const TeamsForm = ({ open, setOpen }: TeamsFormProps) => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-    const newTeam: Team = {
-      _id: selectedTeam?._id || "",
-      name: teamName,
-      logo,
-      shortName: shortName || "",
-      country: country || "",
-      extra: selectedTeam?.extra || {},
-    };
+
+    const formData = new FormData();
+    if (isEditing && selectedTeam) {
+      formData.append("_id", selectedTeam._id);
+    }
+    formData.append("name", teamName);
+    formData.append("shortName", shortName);
+    formData.append("country", country);
+    if (logo) {
+      formData.append("logo", logo);
+    }
 
     if (isEditing && selectedTeam) {
-      await updateTeam(newTeam);
+      await updateTeam(selectedTeam._id, formData);
     } else if (createTeam) {
-      await createTeam(newTeam);
+      await createTeam(formData);
     }
 
     setIsSubmitting(false);
@@ -81,15 +91,15 @@ export const TeamsForm = ({ open, setOpen }: TeamsFormProps) => {
     handleReset();
     setOpen(false);
   };
-
   const handleReset = () => {
     setIsEditing(false);
     setSelectedTeam(null);
     setTeamName("");
     setShortName("");
     setCountry("");
-    setLogo("");
-    setErrorMessage("");
+    setLogo(null);
+    setTeamNameError("");
+    setLogoError("");
   };
 
   return (
@@ -106,8 +116,8 @@ export const TeamsForm = ({ open, setOpen }: TeamsFormProps) => {
             value={teamName}
             required
             onChange={(e) => setTeamName(e.target.value)}
-            error={!!errorMessage}
-            errorMessage={errorMessage}
+            error={!!teamNameError} // Set error state based on teamNameError
+            errorMessage={teamNameError} // Show error message below field
           />
           <TextInput
             label="Short Name"
@@ -128,20 +138,39 @@ export const TeamsForm = ({ open, setOpen }: TeamsFormProps) => {
               ))}
             </select>
           </form>
-          <TextInput
-            label="Logo URL"
-            value={logo}
-            onChange={(e) => setLogo(e.target.value)}
-            required
-            error={!!errorMessage} // Set error state based on errorMessage
-            errorMessage={errorMessage} // Show error message below field
-          />
+          <div className="flex flex-col items-center gap-4">
+            {/* Show current avatar if editing and player has one */}
+            {isEditing && selectedTeam?.logo && (
+              <img
+                src={apiUrl + selectedTeam?.logo}
+                alt="Current Logo"
+                className="size-36 rounded border object-cover"
+              />
+            )}
+            <input
+              type="file"
+              id="logo"
+              accept="image/*"
+              onChange={(e) => setLogo(e.target.files?.[0] || null)}
+              className="hidden"
+            />
+            <button
+              type="button"
+              onClick={() => document.getElementById("logo")?.click()}
+              className="rounded bg-primary px-4 py-2 text-white transition-colors hover:bg-primary-dark"
+            >
+              Upload Logo
+            </button>
+            {logo && (
+              <span className="text-sm text-text-secondary">{logo.name}</span>
+            )}
+            {logoError && (
+              <p className="pt-2 text-sm text-red-500">{logoError}</p>
+            )}
+          </div>
         </div>
       </Container>
       <div className="flex w-full justify-end gap-2 border-t border-border p-2">
-        {errorMessage && (
-          <p className="my-1 text-end text-red-500">{errorMessage}</p>
-        )}
         <div className="mt-1 flex justify-end gap-1">
           {isSubmitting ? (
             <ButtonContained disabled>Submitting...</ButtonContained>

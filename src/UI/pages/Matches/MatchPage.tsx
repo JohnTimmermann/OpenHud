@@ -32,7 +32,7 @@ export const MatchesPage = () => {
   };
 
   return (
-    <section id="MatchPage" className="relative flex size-full flex-col gap-4">
+    <section id="MatchPage" className="relative flex size-full flex-col gap-1">
       <Topbar header="Matches" buttonText="Match" openForm={setOpen} />
       {currentMatch && <MatchCard match={currentMatch} />}
 

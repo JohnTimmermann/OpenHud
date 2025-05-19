@@ -27,7 +27,7 @@ export const usePlayers = () => {
     }
   };
 
-  const createPlayer = async (player: Player) => {
+  const createPlayer = async (player: FormData) => {
     // Handle create or update player logic
     setIsLoading(true);
     await axios.post(`${apiUrl}/players`, player);
@@ -35,10 +35,10 @@ export const usePlayers = () => {
     setIsLoading(false);
   };
 
-  const updatePlayer = async (player: Player) => {
+  const updatePlayer = async (player_id: string, player: FormData) => {
     // Handle update player logic
     setIsLoading(true);
-    await axios.put(`${apiUrl}/players/${player._id}`, player);
+    await axios.put(`${apiUrl}/players/${player_id}`, player);
     fetchPlayers();
     setSelectedPlayer(null);
     setIsLoading(false);

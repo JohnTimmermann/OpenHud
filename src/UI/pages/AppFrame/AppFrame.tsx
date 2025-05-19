@@ -1,28 +1,25 @@
+import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
-import { MdClose, MdMenu } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import { VscChromeMinimize, VscChromeMaximize } from "react-icons/vsc";
 import { VscDebugConsole } from "react-icons/vsc";
 
-interface AppFrameProps {
-  toggleDrawer?: (open: boolean) => void;
-}
+export const AppFrame = () => {
+  const [maximized, setMaximized] = useState<boolean>(false);
 
-export const AppFrame = ({ toggleDrawer }: AppFrameProps) => {
+  const handle_maximize = () => {
+    if (maximized || screen.availWidth - window.innerWidth === 0) {
+      window.electron.sendFrameAction("RESET");
+    } else {
+      window.electron.sendFrameAction("MAXIMIZE");
+    }
+    setMaximized(!maximized);
+  };
   return (
     <div
       id="AppFrame"
-      className="relative flex h-8 w-full items-center justify-center gap-10 bg-background-secondary text-text"
+      className="relative flex h-7 w-full items-center gap-10 bg-background-contrast pl-4 text-text"
     >
-      {toggleDrawer && (
-        <div className="noDrag absolute left-2 flex items-center gap-2 lg:hidden">
-          <button
-            className="noDrag flex items-center justify-center"
-            onClick={() => toggleDrawer(true)}
-          >
-            <MdMenu className="noDrag size-7 transition-colors hover:text-gray-400" />
-          </button>
-        </div>
-      )}
       <div className="flex items-center gap-4">
         <button
           className="noDrag text-text-secondary transition-colors hover:text-secondary-light"
@@ -60,6 +57,10 @@ export const AppFrame = ({ toggleDrawer }: AppFrameProps) => {
           </svg>
         </button>
       </div>
+      <div className="absolute left-1/2 flex font-semibold">
+        <p>Open</p>
+        <p className="text-primary-light">Hud</p>
+      </div>
       <div className="absolute right-0 inline-flex h-full w-min justify-end">
         <button
           id="minimize"
@@ -70,7 +71,7 @@ export const AppFrame = ({ toggleDrawer }: AppFrameProps) => {
         </button>
         <button
           id="maximize"
-          onClick={() => window.electron.sendFrameAction("MAXIMIZE")}
+          onClick={handle_maximize}
           className="noDrag flex w-12 items-center justify-center transition-colors hover:bg-border hover:text-primary"
         >
           <VscChromeMaximize className="size-5" />

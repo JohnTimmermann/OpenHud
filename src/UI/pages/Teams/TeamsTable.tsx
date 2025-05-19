@@ -1,5 +1,7 @@
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useTeams } from "../../hooks";
+import { PrimaryButton } from "../../components/PrimaryButton";
+import { apiUrl } from "../../api/api";
 
 interface TeamsTableProps {
   onEdit: (team: Team) => void;
@@ -8,9 +10,9 @@ interface TeamsTableProps {
 export const TeamsTable = ({ onEdit }: TeamsTableProps) => {
   const { filteredTeams, deleteTeam } = useTeams();
   return (
-    <table className="table-fixed rounded-t-lg bg-background-secondary">
-      <thead className="border-b border-border">
-        <tr className="p-2">
+    <table className="table-fixed">
+      <thead className="sticky top-16 border-b border-border bg-background-secondary shadow">
+        <tr>
           <th className="p-4 text-sm" align="left">
             Logo
           </th>
@@ -28,7 +30,7 @@ export const TeamsTable = ({ onEdit }: TeamsTableProps) => {
           </th>
         </tr>
       </thead>
-      <tbody className="divide-y divide-border">
+      <tbody className="divide-y divide-border bg-background-secondary">
         {filteredTeams.map((team: Team, index) => (
           <TeamRow
             key={index}
@@ -57,33 +59,27 @@ const TeamRow = ({ team, onEdit, deleteTeam }: TeamRowProps) => {
 
   return (
     <tr>
-      <td className="p-4" align="left">
-        <img src={team.logo} alt="Team Logo" className="size-12" />
+      <td className="px-4 py-2" align="left">
+        <img src={apiUrl + team.logo} alt="Team Logo" className="size-12" />
       </td>
-      <td className="p-4 text-lg font-semibold" align="center">
+      <td className="px-4 py-2 text-lg font-semibold" align="center">
         {team.name}
       </td>
-      <td className="p-4" align="center">
+      <td className="px-4 py-2" align="center">
         {team.shortName}
       </td>
-      <td className="p-4 font-semibold" align="center">
+      <td className="px-4 py-2 font-semibold" align="center">
         {team.country}
       </td>
-      <td className="p-4" align="right">
+      <td className="px-4 py-2" align="right">
         <div className="inline-flex">
-          <button
-            className="relative inline-flex min-w-[40px] items-center justify-center rounded-l border border-r-0 border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
-            onClick={() => handleEditClick()}
-          >
+          <PrimaryButton onClick={() => handleEditClick()}>
             <MdEdit className="size-5" />
-          </button>
+          </PrimaryButton>
 
-          <button
-            className="relative inline-flex min-w-[40px] items-center justify-center rounded-r border border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
-            onClick={() => deleteTeam(team._id)}
-          >
+          <PrimaryButton onClick={() => deleteTeam(team._id)}>
             <MdDelete className="size-5" />
-          </button>
+          </PrimaryButton>
         </div>
       </td>
     </tr>

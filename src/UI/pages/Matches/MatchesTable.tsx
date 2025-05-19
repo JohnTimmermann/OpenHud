@@ -4,6 +4,7 @@ import axios from "axios";
 import { socket } from "../../api/socket";
 import { apiUrl } from "../../api/api";
 import { useMatches } from "../../hooks";
+import { PrimaryButton } from "../../components/PrimaryButton";
 
 interface MatchTableProps {
   onEdit: (match: Match) => void;
@@ -18,9 +19,9 @@ export const MatchesTable = ({ onEdit }: MatchTableProps) => {
     });
   }, []);
   return (
-    <table className="table-fixed rounded-t-lg bg-background-secondary">
-      <thead className="border-b border-border">
-        <tr className="p-2">
+    <table className="table-fixed">
+      <thead className="sticky top-16 border-b border-border bg-background-secondary shadow">
+        <tr>
           <th className="p-4 text-sm" align="left">
             Match
           </th>
@@ -35,7 +36,7 @@ export const MatchesTable = ({ onEdit }: MatchTableProps) => {
           </th>
         </tr>
       </thead>
-      <tbody className="divide-y divide-border">
+      <tbody className="divide-y divide-border bg-background-secondary">
         {matches.map((match: Match, index) => (
           <MatchRow key={index} match={match} onEdit={onEdit} />
         ))}
@@ -102,7 +103,7 @@ const MatchRow = ({ match, onEdit }: MatchRowProps) => {
 
   return (
     <tr>
-      <td className="p-4 text-xl font-semibold md:text-2xl" align="left">
+      <td className="px-4 py-2 text-xl font-semibold md:text-2xl" align="left">
         <span className="mr-4">
           {teamOneName} vs {teamTwoName}
         </span>
@@ -112,55 +113,46 @@ const MatchRow = ({ match, onEdit }: MatchRowProps) => {
           ""
         )}
       </td>
-      <td className="p-4 font-semibold uppercase text-gray-400" align="center">
+      <td
+        className="px-4 py-2 font-semibold uppercase text-gray-400"
+        align="center"
+      >
         {match.matchType}
       </td>
-      <td className="p-4 text-lg font-semibold" align="center">
+      <td className="px-4 py-2 text-lg font-semibold" align="center">
         <h6 className="flex items-center justify-center gap-2">
           <img
-            src={teamOneLogo}
+            src={apiUrl + teamOneLogo}
             className="hidden size-12 md:block"
             alt="Team One Logo"
           />{" "}
           {match.left.wins} - {match.right.wins}{" "}
           <img
             className="hidden size-12 md:block"
-            src={teamTwoLogo}
+            src={apiUrl + teamTwoLogo}
             alt="Team Two Logo"
           />
         </h6>
       </td>
-      <td className="p-4" align="right">
+      <td className="px-4 py-2" align="right">
         {match.current ? (
           <div className="inline-flex">
-            <button
-              onClick={handleStopMatch}
-              className="relative inline-flex min-w-[40px] items-center justify-center rounded border border-secondary/50 p-2 px-4 py-1 text-secondary transition-colors hover:bg-secondary/10"
-            >
-              <MdCancel className="size-6" />
-            </button>
+            <PrimaryButton onClick={handleStopMatch}>
+              <MdCancel className="size-6 text-secondary-light" />
+            </PrimaryButton>
           </div>
         ) : (
           <div className="inline-flex">
-            <button
-              onClick={handleStartMatch}
-              className="relative inline-flex min-w-[40px] items-center justify-center rounded-l border border-r-0 border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
-            >
+            <PrimaryButton onClick={handleStartMatch}>
               <MdPlayArrow className="size-6" />
-            </button>
-            <button
-              className="relative inline-flex min-w-[40px] items-center justify-center border border-r-0 border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
-              onClick={() => handleEditClick()}
-            >
+            </PrimaryButton>
+            <PrimaryButton onClick={() => handleEditClick()}>
               <MdEdit className="size-6" />
-            </button>
+            </PrimaryButton>
 
-            <button
-              className="relative inline-flex min-w-[40px] items-center justify-center rounded-r border border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
-              onClick={() => deleteMatch(match.id)}
-            >
+            <PrimaryButton onClick={() => deleteMatch(match.id)}>
               <MdDelete className="size-6" />
-            </button>
+            </PrimaryButton>
           </div>
         )}
       </td>

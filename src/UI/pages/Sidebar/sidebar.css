@@ -9,12 +9,12 @@
 
 /* Track */
 #Sidebar ::-webkit-scrollbar-track {
-  background: rgb(var(--border-color));
+  background: oklch(var(--background-primary));
 }
 
 /* Handle */
 #Sidebar ::-webkit-scrollbar-thumb {
-  background: rgb(73, 95, 126);
+  background: oklch(var(--border-color));
   border-radius: 5px;
 }
 

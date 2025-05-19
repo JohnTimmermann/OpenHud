@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { apiUrl } from "../api/api";
 
-type Theme = "light" | "dark" | "colorful";
+type Theme = "light" | "dark";
 
 interface ThemesContextProps {
   theme: Theme;
@@ -41,8 +41,6 @@ export const ThemesProvider: React.FC<{ children: React.ReactNode }> = ({
         case "dark":
           return "light";
         case "light":
-          return "colorful";
-        case "colorful":
           return "dark";
         default:
           return "dark";

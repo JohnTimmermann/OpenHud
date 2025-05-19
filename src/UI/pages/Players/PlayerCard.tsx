@@ -2,6 +2,7 @@ import { PlayerSilhouette } from "./PlayersPage";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { usePlayers, useTeams } from "../../hooks";
+import { apiUrl } from "../../api/api";
 
 interface PlayerCardProps {
   player: Player;
@@ -9,7 +10,6 @@ interface PlayerCardProps {
 }
 
 export const PlayerCard = ({ player, onEdit }: PlayerCardProps) => {
-  const [isCopied, setIsCopied] = useState(false);
   const [team, setTeam] = useState<Team | null>(null);
   const { deletePlayer } = usePlayers();
   const { getTeamById } = useTeams();
@@ -31,14 +31,6 @@ export const PlayerCard = ({ player, onEdit }: PlayerCardProps) => {
     fetchTeam();
   }, [player, getTeamById]);
 
-  const handleCopyClick = (steamId: string) => {
-    navigator.clipboard.writeText(steamId);
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1250);
-  };
-
   const handleEditClick = () => {
     if (onEdit) {
       onEdit(player);
@@ -46,47 +38,34 @@ export const PlayerCard = ({ player, onEdit }: PlayerCardProps) => {
   };
 
   return (
-    <div className="flex w-full flex-col divide-y divide-border rounded-lg bg-background-secondary px-2">
-      <div className="relative flex w-full justify-between px-2 pt-2">
-        <div>
-          <h4 className="font-semibold">{player.username}</h4>
-          <div className="flex">
-            <p className="text-text-secondary">
-              {player.firstName} {player.lastName}
-            </p>
-          </div>
-          {team?.logo && (
-            <img className="size-8" src={team.logo} alt={`${team.name} logo`} />
-          )}
-        </div>
+    <div className="relative flex w-full flex-col rounded-lg border border-border bg-background-secondary px-2 py-2">
+      {team?.logo && (
         <img
-          className="size-32"
-          src={player.avatar ? player.avatar : PlayerSilhouette}
+          src={apiUrl + team.logo}
+          className="absolute top-2 size-8 opacity-15"
+        />
+      )}
+      <div className="relative flex w-full justify-center">
+        <img
+          className="mx-4 size-24 rounded-lg"
+          src={player.avatar ? apiUrl + player.avatar : PlayerSilhouette}
           alt="Player Avatar"
-        ></img>
+        />
       </div>
-      <div className="flex justify-between gap-2 p-2">
+      <h4 className="text-center font-semibold">{player.username}</h4>
+      <div className="flex w-full items-center justify-center">
         <button
-          onClick={() => handleCopyClick(player.steamid)}
-          className="flex w-full items-center justify-center rounded bg-primary px-2 py-1 text-sm font-semibold text-text transition-colors hover:bg-primary-dark"
+          className="relative z-10 flex items-center justify-center rounded-lg p-1 transition-colors hover:bg-background-light"
+          onClick={() => handleEditClick()}
         >
-          {!isCopied && player.steamid}
-          {isCopied && "Copied!"}
+          <MdEdit className="size-5" />
         </button>
-        <div className="inline-flex">
-          <button
-            className="relative inline-flex min-w-[40px] items-center justify-center rounded-l border border-r-0 border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
-            onClick={() => handleEditClick()}
-          >
-            <MdEdit className="size-5" />
-          </button>
-          <button
-            className="relative inline-flex min-w-[40px] items-center justify-center rounded-r border border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
-            onClick={() => deletePlayer(player._id)}
-          >
-            <MdDelete className="size-5" />
-          </button>
-        </div>
+        <button
+          className="relative z-10 flex items-center justify-center rounded-lg p-1 transition-colors hover:bg-background-light"
+          onClick={() => deletePlayer(player._id)}
+        >
+          <MdDelete className="size-5" />
+        </button>
       </div>
     </div>
   );

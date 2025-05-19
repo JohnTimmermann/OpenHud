@@ -4,6 +4,7 @@ import axios from "axios";
 import knifeImage from "../../assets/knifeRound.png";
 import { apiUrl } from "../../api/api";
 import { useMatches } from "../../hooks";
+import { PrimaryButton } from "../../components/PrimaryButton";
 
 interface MatchCardProps {
   match: Match;
@@ -169,54 +170,57 @@ export const MatchCard = ({ match }: MatchCardProps) => {
           <h1 className="text-4xl font-bold text-sky-500 md:text-5xl">
             MATCH LIVE
           </h1>
-          <h2 className="text-3xl font-semibold md:text-4xl">
+          {/* <h2 className="text-3xl font-semibold md:text-4xl">
             {teamOneName} vs {teamTwoName}
-          </h2>
-          <h5>{match.matchType}</h5>
-          <div id="Score" className="mb-2 flex flex-col p-2">
-            <div id="Teams" className="flex gap-2">
-              <div
-                id="TeamOne"
-                className="flex flex-col items-center justify-center gap-1"
-              >
+          </h2> */}
+          <div id="Score" className="mb-2 flex p-2">
+            <div id="Teams" className="flex gap-6">
+              <div id="TeamOne" className="flex flex-col items-center gap-1">
+                <img
+                  src={apiUrl + teamOneLogo}
+                  alt="team1"
+                  className="size-14"
+                />
                 <h1 className="text-6xl font-bold">{match.left.wins}</h1>
-                <img src={teamOneLogo} alt="team1" className="size-14" />
-                <div className="inline-flex">
-                  <button
-                    className="relative inline-flex min-w-[40px] items-center justify-center rounded-l border border-r-0 border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
+                <div className="inline-flex rounded-lg">
+                  <PrimaryButton
                     onClick={() => handleChangeScore("left", "add")}
                   >
                     <MdAdd />
-                  </button>
+                  </PrimaryButton>
 
-                  <button
-                    className="relative inline-flex min-w-[40px] items-center justify-center rounded-r border border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
+                  <PrimaryButton
                     onClick={() => handleChangeScore("left", "subtract")}
                   >
                     <MdRemove />
-                  </button>
+                  </PrimaryButton>
                 </div>
               </div>
-              <div
-                id="TeamTwo"
-                className="flex flex-col items-center justify-center gap-1"
-              >
+              <div className="flex flex-col items-center justify-center">
+                <h1 className="flex items-center justify-center font-bold">
+                  VS
+                </h1>
+                <h5 className="text-text-secondary">{match.matchType}</h5>
+              </div>
+              <div id="TeamTwo" className="flex flex-col items-center gap-1">
+                <img
+                  src={apiUrl + teamTwoLogo}
+                  alt="team2"
+                  className="size-14"
+                />
                 <h1 className="text-6xl font-bold">{match.right.wins}</h1>
-                <img src={teamTwoLogo} alt="team2" className="size-14" />
-                <div className="inline-flex">
-                  <button
-                    className="relative inline-flex min-w-[40px] items-center justify-center rounded-l border border-r-0 border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
+                <div className="inline-flex rounded-lg">
+                  <PrimaryButton
                     onClick={() => handleChangeScore("right", "add")}
                   >
                     <MdAdd />
-                  </button>
+                  </PrimaryButton>
 
-                  <button
-                    className="relative inline-flex min-w-[40px] items-center justify-center rounded-r border border-primary/50 p-2 px-4 py-1 text-primary transition-colors hover:bg-primary/10"
+                  <PrimaryButton
                     onClick={() => handleChangeScore("right", "subtract")}
                   >
                     <MdRemove />
-                  </button>
+                  </PrimaryButton>
                 </div>
               </div>
             </div>
@@ -231,7 +235,7 @@ export const MatchCard = ({ match }: MatchCardProps) => {
             <h5>Coaches</h5>
             <div className="flex gap-2">
               <input
-                className="h-5/6"
+                className="h-5/6 w-36"
                 placeholder="steamid"
                 name="coaches"
                 type="text"
@@ -293,9 +297,9 @@ export const MatchCard = ({ match }: MatchCardProps) => {
                   <img
                     src={
                       veto.teamId === teamOneId
-                        ? teamOneLogo
+                        ? apiUrl + teamOneLogo
                         : veto.teamId === teamTwoId
-                          ? teamTwoLogo
+                          ? apiUrl + teamTwoLogo
                           : knifeImage
                     }
                     alt="team"

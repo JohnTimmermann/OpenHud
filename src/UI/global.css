@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -22,6 +23,7 @@
     @apply text-lg;
   }
   [type="text"],
+  [type="file"],
   [type="email"],
   [type="url"],
   [type="password"],
@@ -53,8 +55,7 @@ body,
   line-height: normal;
 }
 
-#AppFrame,
-#HomeLogo {
+#AppFrame {
   -webkit-app-region: drag;
 }
 
@@ -69,12 +70,12 @@ body,
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: hsl(var(--border-color));
+  background: oklch(var(--border-color));
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--background-light));
+  background: oklch(var(--background-hover));
   border-radius: 5px;
 }
 
@@ -84,63 +85,44 @@ body,
 } */
 
 .dark {
-  --background-primary: 220, 15%, 8%; /* main background color */
-  --background-secondary: 220, 15%, 11%; /* spacing, secondary elements */
-  --background-hover: 220, 15%, 18%; /* slightly lighter for hover */
-  --background-light: 220, 15%, 35%; /* even lighter for light background */
-  --text-color: 0, 0%, 100%; /* White */
-  --border-color: 220, 15%, 20%; /* same as hover */
-  --button-color: 120, 50%, 50%; /* Medium Green */
-  --button-text: 0, 0%, 100%; /* White */
-  --primary: 150 85.4% 32.2%; /* Dark Green */
-  --primary-light: 150, 65%, 45.5%; /* Light Green */
-  --primary-dark: 150, 86%, 22.4%; /* Darker Green */
-  --secondary: 340, 100%, 50%; /* Bright Red */
-  --secondary-light: 340, 100%, 70%; /* Light Red */
-  --secondary-dark: 340, 100%, 30%; /* Dark Red */
-  --text: 0, 0%, 100%; /* White */
-  --text-secondary: 0, 0%, 100%, 0.7; /* Semi-transparent White */
-  --text-disabled: 0, 0%, 100%, 0.5; /* More Transparent White */
-  background: hsl(var(--background-secondary));
+  --background-primary: 0.21 0.006 285.885; /* main background color */
+  --background-contrast: 0.141 0.005 285.823;
+  --background-secondary: 0.274 0.006 286.033; /* spacing, secondary elements */
+  --background-light: 0.37 0.013 285.805; /* slightly lighter for hover */
+  --background-hover: 0.552 0.016 285.938; /* even lighter for light background */
+  --text-color: 1 0 0; /* White */
+  --border-color: 0.37 0.013 285.805; /* same as hover */
+  --button-color: 0.72 0.18 142.08; /* Medium Green */
+  --button-text: 1 0 0; /* White */
+  --primary: 0.588 0.158 241.966;
+  --primary-light: 0.685 0.169 237.323;
+  --primary-dark: 0.5 0.134 242.749;
+  --secondary: 0.645 0.246 16.439;
+  --secondary-light: 0.712 0.194 13.428;
+  --secondary-dark: 0.514 0.222 16.935;
+  --text: 1 0 0; /* White */
+  --text-secondary: 1 0 0 / 0.7; /* Semi-transparent White */
+  --text-disabled: 1 0 0 / 0.5; /* More Transparent White */
+  background: oklch(var(--background-secondary));
 }
 
 .light {
-  --background-primary: 0, 0%, 100%; /* White */
-  --background-secondary: 0, 0%, 94%; /* Light Gray */
-  --background-hover: 0, 0%, 86%; /* Gray */
-  --background-light: 0, 0%, 78%; /* Darker Gray */
-  --text-color: 0, 0%, 0%; /* Black */
-  --border-color: 0, 0%, 78%; /* Darker Gray */
-  --button-text: 0, 0%, 100%; /* White */
-  --primary: 210, 100%, 40%; /* Muted Blue */
-  --primary-light: 210, 80%, 51%; /* Muted Light Blue */
-  --primary-dark: 210, 100%, 32%; /* Darker Muted Blue */
-  --secondary: 0, 100%, 60%; /* Red */
-  --secondary-light: 0, 100%, 70%; /* Light Red */
-  --secondary-dark: 0, 100%, 40%; /* Dark Red */
-  --text: 0, 0%, 0%; /* Black */
-  --text-secondary: 0, 0%, 0%, 0.7; /* Semi-transparent Black */
-  --text-disabled: 0, 0%, 0%, 0.5; /* More Transparent Black */
-  background: hsl(var(--background-secondary));
-}
-
-.colorful {
-  --background-primary: 160, 25%, 15%; /* Darker Evergreen */
-  --background-secondary: 160, 25%, 10%; /* Even Darker Evergreen */
-  --background-hover: 160, 25%, 20%; /* Muted Dark Evergreen */
-  --background-light: 160, 25%, 25%; /* Lighter Muted Dark Evergreen */
-  --text-color: 0, 0%, 90%; /* Off-White */
-  --border-color: 160, 25%, 25%; /* Muted Dark Evergreen */
-  --button-color: 160, 40%, 20%; /* Muted Bright Dark Evergreen */
-  --button-text: 0, 0%, 90%; /* Off-White */
-  --primary: 270, 40%, 40%; /* Muted Purple */
-  --primary-light: 270, 40%, 60%; /* Light Muted Purple */
-  --primary-dark: 270, 40%, 20%; /* Dark Muted Purple */
-  --secondary: 210, 80%, 30%; /* Dark Muted Sky Blue */
-  --secondary-light: 210, 80%, 50%; /* Light Muted Sky Blue */
-  --secondary-dark: 210, 80%, 20%; /* Darker Muted Sky Blue */
-  --text: 0, 0%, 90%; /* Off-White */
-  --text-secondary: 0, 0%, 90%, 0.7; /* Semi-transparent Off-White */
-  --text-disabled: 0, 0%, 90%, 0.5; /* More Transparent Off-White */
-  background: hsl(var(--background-secondary));
+  --background-primary: 0.94 0 0;
+  --background-contrast: 0.871 0.006 286.286;
+  --background-secondary: 1 0 0;
+  --background-hover: 0.86 0 0; /* Gray */
+  --background-light: 0.78 0 0; /* Darker Gray */
+  --text-color: 0 0 0; /* Black */
+  --border-color: 0.78 0 0; /* Darker Gray */
+  --button-text: 1 0 0; /* White */
+  --primary: 0.588 0.158 241.966;
+  --primary-dark: 0.685 0.169 237.323;
+  --primary-light: 0.588 0.158 241.966;
+  --secondary: 0.645 0.246 16.439;
+  --secondary-light: 0.514 0.222 16.935;
+  --secondary-dark: 0.712 0.194 13.428;
+  --text: 0 0 0; /* Black */
+  --text-secondary: 0 0 0 / 0.7; /* Semi-transparent Black */
+  --text-disabled: 0 0 0 / 0.5; /* More Transparent Black */
+  background: oklch(var(--background-secondary));
 }
