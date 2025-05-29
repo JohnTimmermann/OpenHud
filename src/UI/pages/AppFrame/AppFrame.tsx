@@ -18,11 +18,11 @@ export const AppFrame = () => {
   return (
     <div
       id="AppFrame"
-      className="relative flex h-7 w-full items-center gap-10 bg-background-contrast pl-4 text-text"
+      className="bg-background-contrast text-text relative flex h-7 w-full items-center gap-10 pl-4"
     >
       <div className="flex items-center gap-4">
         <button
-          className="noDrag text-text-secondary transition-colors hover:text-secondary-light"
+          className="noDrag text-text-secondary hover:text-secondary-light transition-colors"
           onClick={() => window.electron.sendFrameAction("CONSOLE")}
         >
           <VscDebugConsole className="size-5" />
@@ -33,7 +33,7 @@ export const AppFrame = () => {
               "https://github.com/JohnTimmermann/OpenHud",
             )
           }
-          className="noDrag text-text-secondary transition-colors hover:text-secondary-light"
+          className="noDrag text-text-secondary hover:text-secondary-light transition-colors"
           rel="noreferrer"
         >
           <FaGithub className="size-5" />
@@ -42,7 +42,7 @@ export const AppFrame = () => {
           onClick={() =>
             window.electron.openExternalLink("https://discord.gg/HApB9HyaWM")
           }
-          className="noDrag text-text-secondary transition-colors hover:text-secondary-light"
+          className="noDrag text-text-secondary hover:text-secondary-light transition-colors"
           rel="noreferrer"
         >
           <svg
@@ -65,21 +65,21 @@ export const AppFrame = () => {
         <button
           id="minimize"
           onClick={() => window.electron.sendFrameAction("MINIMIZE")}
-          className="noDrag flex w-12 items-center justify-center transition-colors hover:bg-border hover:text-primary"
+          className="noDrag hover:bg-border hover:text-primary flex w-12 items-center justify-center transition-colors"
         >
           <VscChromeMinimize className="size-5" />
         </button>
         <button
           id="maximize"
           onClick={handle_maximize}
-          className="noDrag flex w-12 items-center justify-center transition-colors hover:bg-border hover:text-primary"
+          className="noDrag hover:bg-border hover:text-primary flex w-12 items-center justify-center transition-colors"
         >
           <VscChromeMaximize className="size-5" />
         </button>
         <button
           id="quit"
           onClick={() => window.electron.sendFrameAction("CLOSE")}
-          className="noDrag flex w-12 items-center justify-center transition-colors hover:bg-border hover:bg-red-400"
+          className="noDrag hover:bg-border flex w-12 items-center justify-center transition-colors hover:bg-red-400"
         >
           <MdClose className="size-5" />
         </button>

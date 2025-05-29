@@ -28,7 +28,7 @@ export const Searchbar = ({ dataSearch }: SearchBarProps) => {
       <input
         type="text"
         placeholder={`Search`}
-        className="w-36 border-none bg-transparent focus:outline-none focus:ring-0"
+        className="w-36 border-none bg-transparent focus:outline-hidden focus:ring-0"
         onChange={handleSearch}
         value={searchValue}
       />

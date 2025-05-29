@@ -11,7 +11,7 @@ export const TeamsTable = ({ onEdit }: TeamsTableProps) => {
   const { filteredTeams, deleteTeam } = useTeams();
   return (
     <table className="table-fixed">
-      <thead className="sticky top-16 border-b border-border bg-background-secondary shadow">
+      <thead className="sticky top-16 border-b border-border bg-background-secondary shadow-sm">
         <tr>
           <th className="p-4 text-sm" align="left">
             Logo

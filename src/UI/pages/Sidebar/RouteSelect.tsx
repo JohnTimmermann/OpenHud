@@ -53,7 +53,7 @@ const NavRoutes = ({ Icon, title, target, to }: RouteProps) => {
       to={to}
       target={target}
       className={({ isActive }) =>
-        `flex w-full items-center gap-4 rounded-lg py-2 pl-3.5 ${isActive ? "bg-background-light text-text shadow" : "text-text-secondary shadow-none hover:bg-background-light"}`
+        `flex w-full items-center gap-4 rounded-lg py-2 pl-3.5 ${isActive ? "bg-background-light text-text shadow-sm" : "text-text-secondary shadow-none hover:bg-background-light"}`
       }
     >
       {({ isActive }) => (

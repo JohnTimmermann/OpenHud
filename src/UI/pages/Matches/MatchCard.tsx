@@ -243,7 +243,7 @@ export const MatchCard = ({ match }: MatchCardProps) => {
                 onChange={(e) => setCoachInput(e.target.value)}
               />
               <button
-                className="h-5/6 rounded bg-background-light px-2"
+                className="h-5/6 rounded-sm bg-background-light px-2"
                 onClick={handleAddCoach}
               >
                 Add

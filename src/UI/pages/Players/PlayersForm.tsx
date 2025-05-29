@@ -214,7 +214,7 @@ export const PlayerForm = ({ open, setOpen }: PlayerFormProps) => {
                 <img
                   src={apiUrl + selectedPlayer.avatar}
                   alt="Current Avatar"
-                  className="size-36 rounded border object-cover"
+                  className="size-36 rounded-sm border object-cover"
                 />
               )}
 

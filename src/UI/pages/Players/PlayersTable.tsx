@@ -13,7 +13,7 @@ export const PlayersTable = ({ onEdit }: PlayersTableProps) => {
   const { filteredPlayers } = usePlayers();
   return (
     <table className="table-fixed">
-      <thead className="sticky top-16 border-b border-border bg-background-secondary shadow">
+      <thead className="sticky top-16 border-b border-border bg-background-secondary shadow-sm">
         <tr>
           <th className="p-4 text-sm" align="left">
             Avatar
