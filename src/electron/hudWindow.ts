@@ -21,5 +21,11 @@ export function createHudWindow() {
   hudWindow.loadFile(path.join(getHudPath(), "index.html"));
   hudWindow.setIgnoreMouseEvents(true);
 
+  hudWindow.on("show", () => {
+    setTimeout(() => {
+      hudWindow.focus();
+    }, 200);
+  });
+
   return hudWindow;
 }
