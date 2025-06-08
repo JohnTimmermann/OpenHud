@@ -1,21 +1,18 @@
-MIT License
+Copyright (c) 2025 John Timmermann
 
-Copyright (c) 2024 JohnTimmermann
+Permission is hereby granted to any person obtaining a copy of this software and associated documentation files (the "Software"), to use, copy, modify, and distribute the Software, subject to the following conditions:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. **Commercial Use**: You may use the Software in commercial contexts (e.g., monetized streams, videos, or events), provided that you do not sell, sublicense, or distribute the Software itself for a fee or as part of a paid product or service.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+2. **No Resale**: You may not sell, license, or distribute the Software or modified versions of it as a standalone product, or as part of any commercial offering.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+3. **Attribution**:
+   - You must retain the above copyright notice and this license.
+   - If you modify and distribute the Software (in any form), you must:
+     - Clearly state that you have made changes.
+     - Include a notice identifying the original author (John Timmermann) and a link to the original repository if available.
+     - Document the nature of the changes made.
+
+4. **No Trademark Use**: This license does not grant permission to use the name, logo, or branding of the original project without separate permission.
+
+5. **Disclaimer**: THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY...

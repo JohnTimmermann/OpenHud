@@ -5,6 +5,14 @@ Join the community [Discord](https://discord.gg/HApB9HyaWM)!
 - Tech: Electron, React, Typescript, NodeJS, Express, Socketio, SQLite3
 - Styling: TailwindCSS (admin panel) / Sass (hud)
 
+## License
+
+This software is licensed under a custom license that allows free use and modification — including in monetized streams and videos — but **forbids resale** of the program or modified versions.
+
+If you redistribute modified versions, you must provide proper credit and disclose what changes were made.
+
+See [LICENSE](./LICENSE) for full details.
+
 # Getting Started:
 
 - Download the latest .zip form the releases page and unzip it.
